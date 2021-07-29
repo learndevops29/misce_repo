@@ -1,0 +1,32 @@
+http {
+
+      server {
+          listen 8080;
+          root /opt/myweb;
+      
+          location /images {   #another location 
+              root /opt/;     #location folder /opt/ + /images 
+
+          location ~.jpg$ {   #this is to block .jpg files to display $is to regrex last as jpg
+              return 403;   # rerurn forbidden 
+          }
+
+          }    
+          
+      }
+      server {
+          listen 8888;
+
+          location / {
+              
+              proxy_pass http://localhost:8080/;
+          }
+         
+          location /img {
+
+              proxy_pass http://localhost:8080/images/;
+          } 
+       }     
+          
+}
+events { }
